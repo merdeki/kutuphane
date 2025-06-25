@@ -38,7 +38,9 @@ layout: default
             data-title="{{ text.title | downcase }}"
             data-author="{% if text.author %}{{ text.author | downcase }}{% endif %}"
             data-category="{% if text.category %}{{ text.category | downcase }}{% endif %}">
-            <h3><a href="https://merdeki.github.io/kutuphane{{ text.url }}">{{ text.title }}</a></h3>
+            <h3>
+                <a href="https://merdeki.github.io/kutuphane{{ text.url }}">{{ text.title }}</a>
+            </h3>
             <div class="text-meta">
                 {% if text.author %}<span>by {{ text.author }}</span>{% endif %}
                 {% if text.date %}<span>{{ text.date | date: "%B %Y" }}</span>{% endif %}
@@ -219,6 +221,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 author.includes(searchTerm) ||
                 content.includes(searchTerm);
 
+            // Case-insensitive match for category
             const matchesCategory = !selectedCategory || category === selectedCategory;
 
             if (matchesSearch && matchesCategory) {
