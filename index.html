@@ -2,64 +2,134 @@
 layout: default
 ---
 
-<section aria-label="Library Introduction" class="library-intro">
-    <h2>Welcome to the Library</h2>
-    <p>Browse through a curated collection of texts, documents, and writings. Each piece has been carefully selected and organized for easy reading and reference.</p>
-</section>
+<nav id="toc" aria-label="Table of Contents">
+  <ul>
+    <li><a href="#library-intro">Welcome</a></li>
+    <li><a href="#search">Search</a></li>
+    <li><a href="#filter">Filter</a></li>
+    <li><a href="#texts">Texts</a></li>
+  </ul>
+</nav>
 
-<form class="search-filter-form" autocomplete="off" role="search" aria-label="Search and Filter Texts">
-    <div class="search-box">
-        <label for="searchInput" class="visually-hidden">Search texts by title, author, or content</label>
-        <input type="text" id="searchInput" placeholder="Search texts by title, author, or content..." aria-label="Search texts" />
-    </div>
-    <div class="filter-options">
-        <label for="categoryFilter">Filter by category:</label>
-        <select id="categoryFilter" aria-label="Category filter">
-            <option value="">All Categories</option>
-            {% assign categories = site.texts | map: 'category' | uniq | sort %}
-            {% for category in categories %}
-                {% if category %}
-                    <option value="{{ category }}">{{ category }}</option>
-                {% endif %}
-            {% endfor %}
-        </select>
-    </div>
-</form>
+<main class="page-content">
+  <section id="library-intro" aria-label="Library Introduction" class="library-intro">
+      <h2>Welcome to the Library</h2>
+      <p>Browse through a curated collection of texts, documents, and writings. Each piece has been carefully selected and organized for easy reading and reference.</p>
+  </section>
 
-<noscript>
-    <div class="no-js-message" style="color: #c0392b; background: #fbeee6; padding: 1em; border-radius: 8px; margin: 1em 0;">
-        <strong>Note:</strong> JavaScript is disabled in your browser. Search and filter features require JavaScript to function.
-    </div>
-</noscript>
+  <form id="search" class="search-filter-form" autocomplete="off" role="search" aria-label="Search and Filter Texts">
+      <div class="search-box">
+          <label for="searchInput" class="visually-hidden">Search texts by title, author, or content</label>
+          <input type="text" id="searchInput" placeholder="Search texts by title, author, or content..." aria-label="Search texts" />
+      </div>
+      <div id="filter" class="filter-options">
+          <label for="categoryFilter">Filter by category:</label>
+          <select id="categoryFilter" aria-label="Category filter">
+              <option value="">All Categories</option>
+              {% assign categories = site.texts | map: 'category' | uniq | sort %}
+              {% for category in categories %}
+                  {% if category %}
+                      <option value="{{ category }}">{{ category }}</option>
+                  {% endif %}
+              {% endfor %}
+          </select>
+      </div>
+  </form>
 
-<section class="text-grid" id="textGrid" aria-label="Library Texts">
-    {% for text in site.texts %}
-        <div class="text-card"
-            data-title="{{ text.title | downcase }}"
-            data-author="{% if text.author %}{{ text.author | downcase }}{% endif %}"
-            data-category="{% if text.category %}{{ text.category | downcase }}{% endif %}">
-            <h3>
-                <a href="https://merdeki.github.io/kutuphane{{ text.url }}">{{ text.title }}</a>
-            </h3>
-            <div class="text-meta">
-                {% if text.author %}<span>by {{ text.author }}</span>{% endif %}
-                {% if text.date %}<span>{{ text.date | date: "%B %Y" }}</span>{% endif %}
-                {% if text.category %}<span class="category-tag">{{ text.category }}</span>{% endif %}
-            </div>
-            {% if text.excerpt %}
-                <div class="text-excerpt">{{ text.excerpt | markdownify | strip_html | truncatewords: 30 }}</div>
-            {% else %}
-                <div class="text-excerpt">{{ text.content | markdownify | strip_html | truncatewords: 30 }}</div>
-            {% endif %}
-        </div>
-    {% endfor %}
-</section>
+  <noscript>
+      <div class="no-js-message" style="color: #c0392b; background: #fbeee6; padding: 1em; border-radius: 8px; margin: 1em 0;">
+          <strong>Note:</strong> JavaScript is disabled in your browser. Search and filter features require JavaScript to function.
+      </div>
+  </noscript>
 
-<div id="noResults" class="no-results" style="display: none;" aria-live="polite">
-    <p>No texts found matching your search criteria.</p>
-</div>
+  <section id="texts" class="text-grid" aria-label="Library Texts">
+      {% for text in site.texts %}
+          <div class="text-card"
+              data-title="{{ text.title | downcase }}"
+              data-author="{% if text.author %}{{ text.author | downcase }}{% endif %}"
+              data-category="{% if text.category %}{{ text.category | downcase }}{% endif %}">
+              <h3>
+                  <a href="https://merdeki.github.io/kutuphane{{ text.url }}">{{ text.title }}</a>
+              </h3>
+              <div class="text-meta">
+                  {% if text.author %}<span>by {{ text.author }}</span>{% endif %}
+                  {% if text.date %}<span>{{ text.date | date: "%B %Y" }}</span>{% endif %}
+                  {% if text.category %}<span class="category-tag">{{ text.category }}</span>{% endif %}
+              </div>
+              {% if text.excerpt %}
+                  <div class="text-excerpt">{{ text.excerpt | markdownify | strip_html | truncatewords: 30 }}</div>
+              {% else %}
+                  <div class="text-excerpt">{{ text.content | markdownify | strip_html | truncatewords: 30 }}</div>
+              {% endif %}
+          </div>
+      {% endfor %}
+  </section>
+
+  <div id="noResults" class="no-results" style="display: none;" aria-live="polite">
+      <p>No texts found matching your search criteria.</p>
+  </div>
+</main>
 
 <style>
+/* Floating TOC */
+#toc {
+  position: fixed;
+  top: 5rem;
+  left: 1rem;
+  width: 200px;
+  background: #f8f9fa;
+  border-radius: 8px;
+  border-left: 4px solid #3498db;
+  padding: 1rem 1rem 1rem 1.5rem;
+  font-size: 1rem;
+  z-index: 1000;
+  box-shadow: 0 2px 8px rgba(44,62,80,0.04);
+}
+#toc ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+#toc li {
+  margin-bottom: 1rem;
+}
+#toc a {
+  color: #2c3e50;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.2s;
+}
+#toc a:hover,
+#toc a:focus {
+  color: #3498db;
+  text-decoration: underline;
+}
+
+/* Push main content right so it doesn't hide under TOC */
+.page-content {
+  margin-left: 230px;
+  max-width: 900px;
+  padding: 2rem 2rem 2rem 0;
+}
+
+/* Responsive: stack TOC on top for small screens */
+@media (max-width: 900px) {
+  #toc {
+    position: static;
+    width: auto;
+    border-left: none;
+    border-top: 4px solid #3498db;
+    margin-bottom: 1.5rem;
+    box-shadow: none;
+    padding-left: 1rem;
+  }
+  .page-content {
+    margin-left: 0;
+    padding: 1rem;
+    max-width: 100%;
+  }
+}
+
 .library-intro {
     margin-bottom: 2rem;
     padding: 1.5rem;
@@ -201,7 +271,7 @@ layout: default
 document.addEventListener('DOMContentLoaded', function() {
     const searchInput = document.getElementById('searchInput');
     const categoryFilter = document.getElementById('categoryFilter');
-    const textGrid = document.getElementById('textGrid');
+    const textGrid = document.getElementById('texts');
     const noResults = document.getElementById('noResults');
     const textCards = document.querySelectorAll('.text-card');
 
