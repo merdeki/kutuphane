@@ -12,7 +12,29 @@ layout: default
         </div>
     </header>
     
-    <div class="text-body">
+    <!-- Reading Controls -->
+    <div class="reading-controls">
+        <button id="tocToggle" class="control-btn">📖 Table of Contents</button>
+        <button id="fontToggle" class="control-btn">🔤 Font Size</button>
+        <button id="themeToggle" class="control-btn">🌙 Dark Mode</button>
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressFill"></div>
+        </div>
+    </div>
+    
+    <!-- Table of Contents -->
+    <nav id="tableOfContents" class="toc-container" style="display: none;">
+        <h3>Table of Contents</h3>
+        <ul id="tocList"></ul>
+    </nav>
+    
+    <!-- Floating TOC Button -->
+    <button id="floatingToc" class="floating-toc" title="Table of Contents">📖</button>
+    
+    <!-- Back to Top Button -->
+    <button id="backToTop" class="back-to-top" title="Back to Top">↑</button>
+    
+    <div class="text-body" id="textBody">
         {{ content }}
     </div>
     
@@ -25,6 +47,7 @@ layout: default
 .text-content {
     max-width: 800px;
     margin: 0 auto;
+    position: relative;
 }
 
 .text-header {
@@ -154,5 +177,178 @@ layout: default
     .text-body p {
         text-align: left;
     }
+    
+    .reading-controls {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .reading-controls .progress-bar {
+        margin-left: 0;
+        margin-top: 1rem;
+    }
+    
+    .floating-toc,
+    .back-to-top {
+        width: 45px;
+        height: 45px;
+        right: 15px;
+        font-size: 1rem;
+    }
+    
+    .floating-toc {
+        bottom: 80px;
+    }
+    
+    .back-to-top {
+        bottom: 25px;
+    }
+    
+    .toc-container {
+        max-height: 300px;
+    }
 }
 </style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Generate Table of Contents
+    function generateTOC() {
+        const headings = document.querySelectorAll('.text-body h1, .text-body h2, .text-body h3, .text-body h4, .text-body h5, .text-body h6');
+        const tocList = document.getElementById('tocList');
+        
+        if (headings.length === 0) {
+            document.getElementById('tocToggle').style.display = 'none';
+            return;
+        }
+        
+        headings.forEach(function(heading, index) {
+            // Add ID to heading for linking
+            const id = 'heading-' + index;
+            heading.id = id;
+            
+            // Create TOC entry
+            const li = document.createElement('li');
+            const a = document.createElement('a');
+            a.href = '#' + id;
+            a.textContent = heading.textContent;
+            a.className = 'toc-' + heading.tagName.toLowerCase();
+            
+            // Smooth scroll to heading
+            a.addEventListener('click', function(e) {
+                e.preventDefault();
+                heading.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                
+                // Hide TOC on mobile after clicking
+                if (window.innerWidth <= 600) {
+                    document.getElementById('tableOfContents').style.display = 'none';
+                }
+            });
+            
+            li.appendChild(a);
+            tocList.appendChild(li);
+        });
+    }
+    
+    // TOC Toggle
+    const tocToggle = document.getElementById('tocToggle');
+    const tableOfContents = document.getElementById('tableOfContents');
+    
+    tocToggle.addEventListener('click', function() {
+        if (tableOfContents.style.display === 'none') {
+            tableOfContents.style.display = 'block';
+            tocToggle.textContent = '📖 Hide TOC';
+        } else {
+            tableOfContents.style.display = 'none';
+            tocToggle.textContent = '📖 Table of Contents';
+        }
+    });
+    
+    // Font Size Toggle
+    const fontToggle = document.getElementById('fontToggle');
+    const textBody = document.getElementById('textBody');
+    const fontSizes = ['font-small', 'font-normal', 'font-large', 'font-xl'];
+    let currentFontIndex = 1; // Start with normal
+    
+    fontToggle.addEventListener('click', function() {
+        textBody.classList.remove(...fontSizes);
+        currentFontIndex = (currentFontIndex + 1) % fontSizes.length;
+        textBody.classList.add(fontSizes[currentFontIndex]);
+        
+        const labels = ['Small', 'Normal', 'Large', 'X-Large'];
+        fontToggle.textContent = '🔤 ' + labels[currentFontIndex];
+    });
+    
+    // Dark Theme Toggle
+    const themeToggle = document.getElementById('themeToggle');
+    
+    themeToggle.addEventListener('click', function() {
+        document.body.classList.toggle('dark-theme');
+        
+        if (document.body.classList.contains('dark-theme')) {
+            themeToggle.textContent = '☀️ Light Mode';
+            localStorage.setItem('darkTheme', 'true');
+        } else {
+            themeToggle.textContent = '🌙 Dark Mode';
+            localStorage.setItem('darkTheme', 'false');
+        }
+    });
+    
+    // Load saved theme
+    if (localStorage.getItem('darkTheme') === 'true') {
+        document.body.classList.add('dark-theme');
+        themeToggle.textContent = '☀️ Light Mode';
+    }
+    
+    // Reading Progress
+    const progressFill = document.getElementById('progressFill');
+    
+    function updateProgress() {
+        const scrollTop = window.pageYOffset;
+        const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+        const scrollPercent = (scrollTop / docHeight) * 100;
+        progressFill.style.width = Math.min(scrollPercent, 100) + '%';
+    }
+    
+    // Floating Buttons Visibility
+    const floatingToc = document.getElementById('floatingToc');
+    const backToTop = document.getElementById('backToTop');
+    
+    function updateFloatingButtons() {
+        const scrollTop = window.pageYOffset;
+        
+        if (scrollTop > 300) {
+            floatingToc.classList.add('visible');
+            backToTop.classList.add('visible');
+        } else {
+            floatingToc.classList.remove('visible');
+            backToTop.classList.remove('visible');
+        }
+    }
+    
+    // Floating Button Actions
+    floatingToc.addEventListener('click', function() {
+        if (tableOfContents.style.display === 'none') {
+            tableOfContents.style.display = 'block';
+            tableOfContents.scrollIntoView({ behavior: 'smooth' });
+        } else {
+            tableOfContents.style.display = 'none';
+        }
+    });
+    
+    backToTop.addEventListener('click', function() {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+    
+    // Scroll Event Listeners
+    window.addEventListener('scroll', function() {
+        updateProgress();
+        updateFloatingButtons();
+    });
+    
+    // Initialize
+    generateTOC();
+    updateProgress();
+    updateFloatingButtons();
+});
+</script>
