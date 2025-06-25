@@ -1,8 +1,8 @@
 # Site settings
 title: Personal Library
 description: A collection of texts and documents
-baseurl: "" # the subpath of your site, e.g. /blog
-url: "" # the base hostname & protocol for your site
+baseurl: "/kutuphane" # the subpath of your site, e.g. /blog
+url: "https://merdeki.github.io" # the base hostname & protocol for your site
 
 # Build settings
 markdown: kramdown
