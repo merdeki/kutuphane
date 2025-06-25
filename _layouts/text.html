@@ -2,216 +2,146 @@
 layout: default
 ---
 
-<link rel="stylesheet" href="{{ site.baseurl }}/assets/css/reading.css">
+<nav id="toc" aria-label="Table of Contents">
+  <ul>
+    <li><a href="#text-title">Title</a></li>
+    <li><a href="#text-meta">Details</a></li>
+    <li><a href="#text-content">Content</a></li>
+    <li><a href="#text-navigation">Navigation</a></li>
+  </ul>
+</nav>
 
-<article class="text-content">
-    <header class="text-header">
-        <h1>{{ page.title }}</h1>
-        <div class="text-meta">
-            {% if page.author %}<span class="author">by {{ page.author }}</span>{% endif %}
-            {% if page.date %}<span class="date">{{ page.date | date: "%B %d, %Y" }}</span>{% endif %}
-            {% if page.category %}<span class="category">{{ page.category }}</span>{% endif %}
-        </div>
-    </header>
-    
-    <!-- Reading Controls -->
-    <div class="reading-controls">
-        <button id="tocToggle" class="control-btn">📖 Table of Contents</button>
-        <button id="fontToggle" class="control-btn">🔤 Font Size</button>
-        <button id="themeToggle" class="control-btn">🌙 Dark Mode</button>
-        <div class="progress-bar">
-            <div class="progress-fill" id="progressFill"></div>
-        </div>
-    </div>
-    
-    <!-- Table of Contents -->
-    <nav id="tableOfContents" class="toc-container" style="display: none;">
-        <h3>Table of Contents</h3>
-        <ul id="tocList"></ul>
-    </nav>
-    
-    <!-- Floating TOC Button -->
-    <button id="floatingToc" class="floating-toc" title="Table of Contents">📖</button>
-    
-    <!-- Back to Top Button -->
-    <button id="backToTop" class="back-to-top" title="Back to Top">↑</button>
-    
-    <div class="text-body" id="textBody">
-        {{ content }}
-    </div>
-    
-    <nav class="text-navigation">
-        <a href="{{ site.baseurl }}/">&larr; Back to Library</a>
-    </nav>
-</article>
+<main class="page-content">
+  <section id="text-title" class="library-intro">
+    <h2>{{ page.title }}</h2>
+  </section>
 
-<script src="{{ site.baseurl }}/assets/js/reading.js"></script>
+  <section id="text-meta" class="text-meta-section">
+    {% if page.author %}
+      <div><strong>Author:</strong> {{ page.author }}</div>
+    {% endif %}
+    {% if page.date %}
+      <div><strong>Date:</strong> {{ page.date | date: "%B %Y" }}</div>
+    {% endif %}
+    {% if page.category %}
+      <div><strong>Category:</strong> <span class="category-tag">{{ page.category }}</span></div>
+    {% endif %}
+  </section>
+
+  <section id="text-content" class="text-content-section">
+    {{ content }}
+  </section>
+
+  <nav id="text-navigation" class="text-navigation">
+    <a href="https://merdeki.github.io/kutuphane/">← Back to Library Index</a>
+    {% if page.previous %}
+      <a href="https://merdeki.github.io/kutuphane{{ page.previous.url }}">← Previous</a>
+    {% endif %}
+    {% if page.next %}
+      <a href="https://merdeki.github.io/kutuphane{{ page.next.url }}">Next →</a>
+    {% endif %}
+  </nav>
+</main>
 
 <style>
-.text-content {
-    max-width: 800px;
-    margin: 0 auto;
-    position: relative;
+/* Floating TOC */
+#toc {
+  position: fixed;
+  top: 5rem;
+  left: 1rem;
+  width: 200px;
+  background: #f8f9fa;
+  border-radius: 8px;
+  border-left: 4px solid #3498db;
+  padding: 1rem 1rem 1rem 1.5rem;
+  font-size: 1rem;
+  z-index: 1000;
+  box-shadow: 0 2px 8px rgba(44,62,80,0.04);
+}
+#toc ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+#toc li {
+  margin-bottom: 1rem;
+}
+#toc a {
+  color: #2c3e50;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.2s;
+}
+#toc a:hover,
+#toc a:focus {
+  color: #3498db;
+  text-decoration: underline;
 }
 
-.text-header {
-    margin-bottom: 2rem;
-    text-align: center;
-    border-bottom: 1px solid #eee;
-    padding-bottom: 1.5rem;
+/* Push main content right so it doesn't hide under TOC */
+.page-content {
+  margin-left: 230px;
+  max-width: 900px;
+  padding: 2rem 2rem 2rem 0;
 }
 
-.text-header h1 {
-    font-size: 2.2rem;
-    color: #2c3e50;
-    margin-bottom: 1rem;
-    line-height: 1.3;
-}
-
-.text-meta {
-    color: #7f8c8d;
-    font-size: 0.95rem;
-}
-
-.text-meta span {
-    margin: 0 0.5rem;
-}
-
-.text-meta span:first-child {
-    margin-left: 0;
-}
-
-.text-body {
-    font-size: 1.1rem;
-    line-height: 1.8;
-    margin-bottom: 3rem;
-}
-
-.text-body h1,
-.text-body h2,
-.text-body h3,
-.text-body h4,
-.text-body h5,
-.text-body h6 {
-    color: #2c3e50;
-    margin: 2rem 0 1rem 0;
-    line-height: 1.3;
-}
-
-.text-body h1 { font-size: 1.8rem; }
-.text-body h2 { font-size: 1.5rem; }
-.text-body h3 { font-size: 1.3rem; }
-
-.text-body p {
+/* Responsive: stack TOC on top for small screens */
+@media (max-width: 900px) {
+  #toc {
+    position: static;
+    width: auto;
+    border-left: none;
+    border-top: 4px solid #3498db;
     margin-bottom: 1.5rem;
-    text-align: justify;
-}
-
-.text-body blockquote {
-    border-left: 4px solid #3498db;
-    padding: 1rem 1.5rem;
-    margin: 2rem 0;
-    background-color: #f8f9fa;
-    font-style: italic;
-    color: #555;
-}
-
-.text-body ul,
-.text-body ol {
-    margin: 1.5rem 0;
-    padding-left: 2rem;
-}
-
-.text-body li {
-    margin-bottom: 0.5rem;
-}
-
-.text-body code {
-    background-color: #f4f4f4;
-    padding: 0.2rem 0.4rem;
-    border-radius: 3px;
-    font-family: 'Courier New', monospace;
-    font-size: 0.9rem;
-}
-
-.text-body pre {
-    background-color: #f4f4f4;
+    box-shadow: none;
+    padding-left: 1rem;
+  }
+  .page-content {
+    margin-left: 0;
     padding: 1rem;
-    border-radius: 5px;
-    overflow-x: auto;
-    margin: 1.5rem 0;
+    max-width: 100%;
+  }
 }
 
-.text-body pre code {
-    background: none;
-    padding: 0;
+.library-intro {
+    margin-bottom: 2rem;
+    padding: 1.5rem;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    border-left: 4px solid #3498db;
 }
-
+.text-meta-section {
+    margin-bottom: 2rem;
+    padding: 1rem;
+    background: #f4f6fb;
+    border-radius: 6px;
+}
+.category-tag {
+    background-color: #3498db;
+    color: white;
+    padding: 0.2rem 0.5rem;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    font-weight: 500;
+}
+.text-content-section {
+    margin-bottom: 2rem;
+    font-size: 1.08rem;
+    line-height: 1.7;
+}
 .text-navigation {
-    text-align: center;
-    padding-top: 2rem;
-    border-top: 1px solid #eee;
+    display: flex;
+    gap: 2rem;
+    margin-bottom: 2rem;
+    font-size: 1rem;
 }
 
 .text-navigation a {
     color: #3498db;
     text-decoration: none;
-    font-weight: 500;
-    padding: 0.5rem 1rem;
-    border: 1px solid #3498db;
-    border-radius: 5px;
-    transition: all 0.2s ease;
+    font-weight: bold;
 }
-
 .text-navigation a:hover {
-    background-color: #3498db;
-    color: white;
-}
-
-@media (max-width: 600px) {
-    .text-header h1 {
-        font-size: 1.8rem;
-    }
-    
-    .text-body {
-        font-size: 1rem;
-        line-height: 1.7;
-    }
-    
-    .text-body p {
-        text-align: left;
-    }
-    
-    .reading-controls {
-        flex-direction: column;
-        align-items: stretch;
-    }
-    
-    .reading-controls .progress-bar {
-        margin-left: 0;
-        margin-top: 1rem;
-    }
-    
-    .floating-toc,
-    .back-to-top {
-        width: 45px;
-        height: 45px;
-        right: 15px;
-        font-size: 1rem;
-    }
-    
-    .floating-toc {
-        bottom: 80px;
-    }
-    
-    .back-to-top {
-        bottom: 25px;
-    }
-    
-    .toc-container {
-        max-height: 300px;
-    }
+    text-decoration: underline;
 }
 </style>
-
-<script src="{{ site.baseurl }}/assets/js/reading.js"></script>
