@@ -1,7 +1,7 @@
 ---
 title: "Türk Dili İçin"
 author: "Sadri Maksudi"
-date: 1928
+date: 1930
 category: "Dil bilim"
 excerpt: "A comprehensive exploration of how to live intentionally in the digital age, reclaiming focus and meaningful connection in an attention economy."
 ---
