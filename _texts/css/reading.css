@@ -1,0 +1,215 @@
+/* Reading Controls */
+.reading-controls {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 2rem;
+    padding: 1rem;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    flex-wrap: wrap;
+}
+
+.control-btn {
+    background: white;
+    border: 1px solid #ddd;
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: all 0.2s ease;
+}
+
+.control-btn:hover {
+    background-color: #3498db;
+    color: white;
+    border-color: #3498db;
+}
+
+.progress-bar {
+    flex: 1;
+    min-width: 150px;
+    height: 6px;
+    background-color: #e0e0e0;
+    border-radius: 3px;
+    overflow: hidden;
+    margin-left: auto;
+}
+
+.progress-fill {
+    height: 100%;
+    background-color: #3498db;
+    width: 0%;
+    transition: width 0.3s ease;
+}
+
+/* Table of Contents */
+.toc-container {
+    background-color: #f8f9fa;
+    border: 1px solid #e1e8ed;
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.toc-container h3 {
+    margin-top: 0;
+    margin-bottom: 1rem;
+    color: #2c3e50;
+    border-bottom: 2px solid #3498db;
+    padding-bottom: 0.5rem;
+}
+
+.toc-container ul {
+    list-style: none;
+    padding-left: 0;
+    margin: 0;
+}
+
+.toc-container li {
+    margin: 0.5rem 0;
+}
+
+.toc-container a {
+    color: #3498db;
+    text-decoration: none;
+    display: block;
+    padding: 0.3rem 0;
+    border-radius: 4px;
+    transition: background-color 0.2s ease;
+}
+
+.toc-container a:hover {
+    background-color: #e3f2fd;
+    padding-left: 0.5rem;
+}
+
+.toc-container .toc-h2 { padding-left: 0; font-weight: 600; }
+.toc-container .toc-h3 { padding-left: 1rem; }
+.toc-container .toc-h4 { padding-left: 2rem; font-size: 0.9rem; }
+.toc-container .toc-h5 { padding-left: 3rem; font-size: 0.85rem; }
+.toc-container .toc-h6 { padding-left: 4rem; font-size: 0.8rem; }
+
+/* Floating Elements */
+.floating-toc,
+.back-to-top {
+    position: fixed;
+    right: 20px;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    border: none;
+    background-color: #3498db;
+    color: white;
+    font-size: 1.2rem;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    transition: all 0.3s ease;
+    z-index: 1000;
+    opacity: 0;
+    visibility: hidden;
+}
+
+.floating-toc {
+    bottom: 90px;
+}
+
+.back-to-top {
+    bottom: 30px;
+}
+
+.floating-toc.visible,
+.back-to-top.visible {
+    opacity: 1;
+    visibility: visible;
+}
+
+.floating-toc:hover,
+.back-to-top:hover {
+    background-color: #2980b9;
+    transform: scale(1.1);
+}
+
+/* Theme Support */
+.dark-theme {
+    background-color: #1a1a1a;
+    color: #e0e0e0;
+}
+
+.dark-theme .text-header,
+.dark-theme .text-body h1,
+.dark-theme .text-body h2,
+.dark-theme .text-body h3,
+.dark-theme .text-body h4,
+.dark-theme .text-body h5,
+.dark-theme .text-body h6 {
+    color: #ffffff;
+}
+
+.dark-theme .reading-controls,
+.dark-theme .toc-container {
+    background-color: #2d2d2d;
+    border-color: #404040;
+}
+
+.dark-theme .control-btn {
+    background-color: #404040;
+    border-color: #555;
+    color: #e0e0e0;
+}
+
+.dark-theme .text-body blockquote {
+    background-color: #2d2d2d;
+    border-left-color: #3498db;
+    color: #b0b0b0;
+}
+
+.dark-theme .text-body code {
+    background-color: #2d2d2d;
+    color: #e0e0e0;
+}
+
+.dark-theme .text-body pre {
+    background-color: #2d2d2d;
+}
+
+/* Font Size Options */
+.font-small { font-size: 0.95rem; }
+.font-normal { font-size: 1.1rem; }
+.font-large { font-size: 1.25rem; }
+.font-xl { font-size: 1.4rem; }
+
+/* Mobile Responsive */
+@media (max-width: 600px) {
+    .reading-controls {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .reading-controls .progress-bar {
+        margin-left: 0;
+        margin-top: 1rem;
+    }
+    
+    .floating-toc,
+    .back-to-top {
+        width: 45px;
+        height: 45px;
+        right: 15px;
+        font-size: 1rem;
+    }
+    
+    .floating-toc {
+        bottom: 80px;
+    }
+    
+    .back-to-top {
+        bottom: 25px;
+    }
+    
+    .toc-container {
+        max-height: 300px;
+    }
+}
