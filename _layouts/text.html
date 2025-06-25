@@ -3,12 +3,7 @@ layout: default
 ---
 
 <nav id="toc" aria-label="Table of Contents">
-  <ul>
-    <li><a href="#text-title">Title</a></li>
-    <li><a href="#text-meta">Details</a></li>
-    <li><a href="#text-content">Content</a></li>
-    <li><a href="#text-navigation">Navigation</a></li>
-  </ul>
+  <!-- TOC will be generated here -->
 </nav>
 
 <main class="page-content">
@@ -145,3 +140,36 @@ layout: default
     text-decoration: underline;
 }
 </style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const content = document.querySelector('.text-content-section');
+  const toc = document.getElementById('toc');
+  if (!content || !toc) return;
+
+  // Find all h2 and h3 headers in the content
+  const headers = content.querySelectorAll('h2, h3');
+  if (!headers.length) {
+    toc.style.display = 'none';
+    return;
+  }
+
+  let tocList = document.createElement('ul');
+  headers.forEach(header => {
+    // Ensure header has an id for linking
+    if (!header.id) {
+      header.id = header.textContent.trim().toLowerCase().replace(/\s+/g, '-').replace(/[^\w\-]/g, '');
+    }
+    let li = document.createElement('li');
+    li.style.marginLeft = header.tagName === 'H3' ? '1em' : '0';
+    let a = document.createElement('a');
+    a.href = '#' + header.id;
+    a.textContent = header.textContent;
+    li.appendChild(a);
+    tocList.appendChild(li);
+  });
+
+  toc.innerHTML = '<strong>Table of Contents</strong>';
+  toc.appendChild(tocList);
+});
+</script>
