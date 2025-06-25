@@ -1,3 +1,10 @@
+---
+title: "Türk Dili İçin"
+author: "Sadri Maksudi"
+date: 1928
+category: "Dil bilim"
+excerpt: "A comprehensive exploration of how to live intentionally in the digital age, reclaiming focus and meaningful connection in an attention economy."
+---
 # Türk Dili İçin
 
 ![Gazi Hazretleri bu yüksek vecizeleri kendi elleri ile bu kitap için yazmışlardır.][image1]
