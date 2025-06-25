@@ -39,19 +39,26 @@ layout: default
 </main>
 
 <style>
-/* Floating TOC */
+/* Floating TOC for desktop */
 #toc {
   position: fixed;
-  top: 5rem;
-  left: 1rem;
-  width: 200px;
+  top: 4rem;
+  left: 0;
+  width: 220px;
   background: #f8f9fa;
   border-radius: 8px;
   border-left: 4px solid #3498db;
-  padding: 1rem 1rem 1rem 1.5rem;
+  padding: 1.2rem 1.2rem 1.2rem 1.7rem;
   font-size: 1rem;
   z-index: 1000;
   box-shadow: 0 2px 8px rgba(44,62,80,0.04);
+  margin-left: 10px;
+  margin-top: 10px;
+}
+#toc strong {
+  display: block;
+  margin-bottom: .5em;
+  font-size: 1.08em;
 }
 #toc ul {
   list-style: none;
@@ -75,9 +82,52 @@ layout: default
 
 /* Push main content right so it doesn't hide under TOC */
 .page-content {
-  margin-left: 230px;
+  margin-left: 250px;
   max-width: 900px;
-  padding: 2rem 2rem 2rem 0;
+  padding: 2.2rem 1.5rem 2.2rem 0;
+  min-width: 0;
+}
+
+.library-intro {
+  margin-bottom: 2rem;
+  padding: 1.5rem;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  border-left: 4px solid #3498db;
+}
+.text-meta-section {
+  margin-bottom: 2rem;
+  padding: 1rem;
+  background: #f4f6fb;
+  border-radius: 6px;
+}
+.category-tag {
+  background-color: #3498db;
+  color: white;
+  padding: 0.2rem 0.5rem;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+.text-content-section {
+  margin-bottom: 2rem;
+  font-size: 1.08rem;
+  line-height: 1.7;
+}
+.text-navigation {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+  margin-bottom: 2rem;
+  font-size: 1rem;
+}
+.text-navigation a {
+  color: #3498db;
+  text-decoration: none;
+  font-weight: bold;
+}
+.text-navigation a:hover {
+  text-decoration: underline;
 }
 
 /* Responsive: stack TOC on top for small screens */
@@ -87,57 +137,17 @@ layout: default
     width: auto;
     border-left: none;
     border-top: 4px solid #3498db;
+    margin-left: 0;
+    margin-top: 0;
     margin-bottom: 1.5rem;
     box-shadow: none;
-    padding-left: 1rem;
+    padding: 1rem 0 0.5rem 1rem;
   }
   .page-content {
     margin-left: 0;
-    padding: 1rem;
+    padding: 1.1rem;
     max-width: 100%;
   }
-}
-
-.library-intro {
-    margin-bottom: 2rem;
-    padding: 1.5rem;
-    background-color: #f8f9fa;
-    border-radius: 8px;
-    border-left: 4px solid #3498db;
-}
-.text-meta-section {
-    margin-bottom: 2rem;
-    padding: 1rem;
-    background: #f4f6fb;
-    border-radius: 6px;
-}
-.category-tag {
-    background-color: #3498db;
-    color: white;
-    padding: 0.2rem 0.5rem;
-    border-radius: 12px;
-    font-size: 0.8rem;
-    font-weight: 500;
-}
-.text-content-section {
-    margin-bottom: 2rem;
-    font-size: 1.08rem;
-    line-height: 1.7;
-}
-.text-navigation {
-    display: flex;
-    gap: 2rem;
-    margin-bottom: 2rem;
-    font-size: 1rem;
-}
-
-.text-navigation a {
-    color: #3498db;
-    text-decoration: none;
-    font-weight: bold;
-}
-.text-navigation a:hover {
-    text-decoration: underline;
 }
 </style>
 
